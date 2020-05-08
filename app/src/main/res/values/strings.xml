@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">desafio-android-marcos-giovanni</string>
+    <string name="app_name">A Marvel Heroes App</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="powered_by">A Marvel Heroes App\nBy Marcos Di Giovanni</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="show_comic">Show most expensive Comic</string>
 </resources>
