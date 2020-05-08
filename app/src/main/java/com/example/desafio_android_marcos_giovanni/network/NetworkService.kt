@@ -1,18 +1,8 @@
 package com.example.desafio_android_marcos_giovanni.network
 
 import com.example.desafio_android_marcos_giovanni.model.Hero
-import com.example.desafio_android_marcos_giovanni.network.dto.BaseResponse
-import com.example.desafio_android_marcos_giovanni.network.dto.HeroListResponse
-import com.example.desafio_android_marcos_giovanni.util.md5
-import kotlinx.android.synthetic.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.time.Instant
 
 class NetworkService {
     val marvelApi : MarvelApiInterface
@@ -41,7 +31,16 @@ class NetworkService {
         val body  = call.body()
         if (call.isSuccessful && body != null) {
             val response = ArrayList<Hero>()
-            body.data?.results?.forEach { h -> response.add(Hero(h?.id, h.name, h.description, h.thumbnail.path)) }
+            body.data?.results?.forEach { h ->
+                response.add(
+                    Hero(
+                        h.id,
+                        h.name,
+                        h.description,
+                        h.thumbnail.path + "." + h.thumbnail.extension
+                    )
+                )
+            }
             return response
         }
         return emptyList()

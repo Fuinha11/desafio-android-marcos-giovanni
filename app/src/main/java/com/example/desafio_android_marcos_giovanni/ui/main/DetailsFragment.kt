@@ -1,15 +1,14 @@
 package com.example.desafio_android_marcos_giovanni.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-
-import com.example.desafio_android_marcos_giovanni.R
 import com.example.desafio_android_marcos_giovanni.databinding.FragmentDetailsBinding
 import com.example.desafio_android_marcos_giovanni.model.Hero
+import com.squareup.picasso.Picasso
 
 class DetailsFragment(val listener: MoveToComicsListener) : Fragment() {
 
@@ -33,9 +32,11 @@ class DetailsFragment(val listener: MoveToComicsListener) : Fragment() {
 
     private fun populateView() {
         hero = viewModel.selectedHero
-        binding.detailName.setText(viewModel.selectedHero?.name)
-        binding.detailDescription.setText(viewModel.selectedHero?.discription)
+        binding.detailName.text = viewModel.selectedHero?.name
         binding.detailButton.setOnClickListener { listener.onButtonClick() }
+        Picasso.get().load(hero?.imageUrl).into(binding.detailImage)
+        if (hero?.discription?.isNotEmpty()!!)
+            binding.detailDescription.text = viewModel.selectedHero?.discription
     }
 
     companion object {

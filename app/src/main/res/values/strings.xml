@@ -7,4 +7,6 @@
     <string name="powered_by">A Marvel Heroes App\nBy Marcos Di Giovanni</string>
     <string name="placeholder">Placeholder</string>
     <string name="show_comic">Show most expensive Comic</string>
+    <string name="list_title">List of Heroes</string>
+    <string name="no_description">This hero has no discription =/</string>
 </resources>
