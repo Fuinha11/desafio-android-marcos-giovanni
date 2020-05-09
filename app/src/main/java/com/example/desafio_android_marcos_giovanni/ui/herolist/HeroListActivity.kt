@@ -1,24 +1,22 @@
-package com.example.desafio_android_marcos_giovanni
+package com.example.desafio_android_marcos_giovanni.ui.herolist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.example.desafio_android_marcos_giovanni.R
 import com.example.desafio_android_marcos_giovanni.model.Hero
-import com.example.desafio_android_marcos_giovanni.ui.main.DetailsFragment
-import com.example.desafio_android_marcos_giovanni.ui.main.ListFragment
-import com.example.desafio_android_marcos_giovanni.ui.main.MainViewModel
 
-class MainActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
+class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
     DetailsFragment.MoveToComicsListener {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: HeroListViewModel
     val listFragment : ListFragment = ListFragment.newInstance(this)
     var onDetails = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(HeroListViewModel::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {

@@ -1,4 +1,4 @@
-package com.example.desafio_android_marcos_giovanni.ui.main
+package com.example.desafio_android_marcos_giovanni.ui.herolist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 
 class DetailsFragment(val listener: MoveToComicsListener) : Fragment() {
 
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: HeroListViewModel
     lateinit var binding: FragmentDetailsBinding
     var hero: Hero? = null
 
@@ -25,7 +25,8 @@ class DetailsFragment(val listener: MoveToComicsListener) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
-        viewModel = this.activity?.let { ViewModelProviders.of(it).get(MainViewModel::class.java) }!!
+        viewModel =
+            this.activity?.let { ViewModelProviders.of(it).get(HeroListViewModel::class.java) }!!
         populateView()
         return binding.root
     }

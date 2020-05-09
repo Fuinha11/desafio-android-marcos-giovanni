@@ -1,4 +1,4 @@
-package com.example.desafio_android_marcos_giovanni.ui.main.adapter
+package com.example.desafio_android_marcos_giovanni.ui.herolist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.desafio_android_marcos_giovanni.databinding.HeroListItemBinding
 import com.example.desafio_android_marcos_giovanni.model.Hero
-import com.example.desafio_android_marcos_giovanni.ui.main.ListFragment
+import com.example.desafio_android_marcos_giovanni.ui.herolist.ListFragment
 import com.squareup.picasso.Picasso
 
 class HeroListAdapter(val listener: ListFragment.HeroSelectedListener) : PagedListAdapter<Hero, ViewHolder>(HeroDiffUtil) {
