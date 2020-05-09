@@ -2,7 +2,6 @@ package com.example.desafio_android_marcos_giovanni.network
 
 import com.example.desafio_android_marcos_giovanni.model.Comics
 import com.example.desafio_android_marcos_giovanni.model.Hero
-import com.example.desafio_android_marcos_giovanni.network.dto.ComicListResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -50,33 +49,29 @@ class NetworkServiceImpl : NetworkService {
     override fun getComicsForHero(heroId: Int): List<Comics> {
         val list = ArrayList<Comics>()
         var page = 0
-        var total = 1
+        var total = 0
 
         //this is not the best way to go about it
         //The correct way was to order/filter it on the server side
         //Since we don't have this option i'm looping trough all comics
-        while (list.size < total) {
-            val response = getComicsForHeroPaged(heroId, page)
+        do {
+            val call = performCall(
+                marvelApi.getComicsForHero(
+                    heroId,
+                    publicKey,
+                    pageSize,
+                    pageSize * page,
+                    ts,
+                    hash
+                )
+            )
+            val response = call.body()?.data
             total = response?.total ?: total
             page++
             response?.results?.forEach { c -> list.add(c.toModel()) }
-        }
+        } while (list.size < total)
 
         return list
-    }
-
-    private fun getComicsForHeroPaged(heroId: Int, page: Int): ComicListResponse? {
-        val call = performCall(
-            marvelApi.getComicsForHero(
-                heroId,
-                publicKey,
-                pageSize,
-                pageSize * page,
-                ts,
-                hash
-            )
-        )
-        return call.body()?.data
     }
 
     private fun <T> performCall(call: Call<T>): Response<T> {
