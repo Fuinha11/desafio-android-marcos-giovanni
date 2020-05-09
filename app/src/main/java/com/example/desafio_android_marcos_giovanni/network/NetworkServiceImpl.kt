@@ -3,6 +3,8 @@ package com.example.desafio_android_marcos_giovanni.network
 import com.example.desafio_android_marcos_giovanni.model.Comics
 import com.example.desafio_android_marcos_giovanni.model.Hero
 import com.example.desafio_android_marcos_giovanni.network.dto.ComicListResponse
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -23,23 +25,24 @@ class NetworkServiceImpl : NetworkService {
     }
 
     override fun getHeroes(page: Int): List<Hero> {
-        val call = marvelApi.getHeroes(
+        val response = performCall(
+            marvelApi.getHeroes(
             publicKey,
             pageSize,
             page * pageSize,
             ts,
             hash
-        ).execute()
-
-        val body = call.body()
-        if (call.isSuccessful && body != null) {
-            val response = ArrayList<Hero>()
+            )
+        )
+        val body = response.body()
+        if (body != null) {
+            val list = ArrayList<Hero>()
             body.data?.results?.forEach { h ->
-                response.add(
+                list.add(
                     h.toModel()
                 )
             }
-            return response
+            return list
         }
         return emptyList()
     }
@@ -63,16 +66,32 @@ class NetworkServiceImpl : NetworkService {
     }
 
     private fun getComicsForHeroPaged(heroId: Int, page: Int): ComicListResponse? {
-        val call = marvelApi.getComicsForHero(
-            heroId,
-            publicKey,
-            pageSize,
-            pageSize * page,
-            ts,
-            hash
-        ).execute()
-
+        val call = performCall(
+            marvelApi.getComicsForHero(
+                heroId,
+                publicKey,
+                pageSize,
+                pageSize * page,
+                ts,
+                hash
+            )
+        )
         return call.body()?.data
+    }
+
+    private fun <T> performCall(call: Call<T>): Response<T> {
+        //This method is to deal with errors in the Api and to retry calls if needed
+        var success: Boolean
+        var retryCount = 0
+        var response: Response<T>
+        do {
+            val clone = call.clone()
+            response = clone.execute()
+            success = response.isSuccessful && response.code() == 200
+            retryCount++
+        } while (!success || retryCount < 3)
+
+        return response
     }
 
     companion object {
