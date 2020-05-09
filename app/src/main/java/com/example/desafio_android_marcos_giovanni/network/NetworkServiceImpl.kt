@@ -1,6 +1,8 @@
 package com.example.desafio_android_marcos_giovanni.network
 
+import com.example.desafio_android_marcos_giovanni.model.Comics
 import com.example.desafio_android_marcos_giovanni.model.Hero
+import com.example.desafio_android_marcos_giovanni.network.dto.ComicListResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -34,17 +36,43 @@ class NetworkServiceImpl : NetworkService {
             val response = ArrayList<Hero>()
             body.data?.results?.forEach { h ->
                 response.add(
-                    Hero(
-                        h.id,
-                        h.name,
-                        h.description,
-                        h.thumbnail.path + "." + h.thumbnail.extension
-                    )
+                    h.toModel()
                 )
             }
             return response
         }
         return emptyList()
+    }
+
+    override fun getComicsForHero(heroId: Int): List<Comics> {
+        val list = ArrayList<Comics>()
+        var page = 0
+        var total = 1
+
+        //this is not the best way to go about it
+        //The correct way was to order/filter it on the server side
+        //Since we don't have this option i'm looping trough all comics
+        while (list.size < total) {
+            val response = getComicsForHeroPaged(heroId, page)
+            total = response?.total ?: total
+            page++
+            response?.results?.forEach { c -> list.add(c.toModel()) }
+        }
+
+        return list
+    }
+
+    private fun getComicsForHeroPaged(heroId: Int, page: Int): ComicListResponse? {
+        val call = marvelApi.getComicsForHero(
+            heroId,
+            publicKey,
+            pageSize,
+            pageSize * page,
+            ts,
+            hash
+        ).execute()
+
+        return call.body()?.data
     }
 
     companion object {

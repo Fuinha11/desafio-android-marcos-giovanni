@@ -7,11 +7,11 @@ import androidx.paging.PagedList
 import com.example.desafio_android_marcos_giovanni.model.Hero
 import com.example.desafio_android_marcos_giovanni.model.data_source.HeroDataSourceFactory
 
-class HeroListViewModel : ViewModel {
+class HeroListViewModel : ViewModel() {
     val heroList : LiveData<PagedList<Hero>>
     var selectedHero : Hero? = null
 
-    constructor() {
+    init {
         val config = PagedList.Config.Builder()
             .setPageSize(20)
             .setEnablePlaceholders(true)

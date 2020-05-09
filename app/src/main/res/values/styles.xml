@@ -21,7 +21,7 @@
     </style>
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+        <item name="android:background">@color/gray_overlay</item>
     </style>
 
     <style name="TextViewMediumLight">
@@ -32,6 +32,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:maxLines">3</item>
         <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="TextViewLargeLight">
@@ -42,6 +43,7 @@
         <item name="android:textSize">24sp</item>
         <item name="android:maxLines">3</item>
         <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
 </resources>

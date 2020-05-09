@@ -1,11 +1,12 @@
 package com.example.desafio_android_marcos_giovanni.ui.herolist
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.desafio_android_marcos_giovanni.R
 import com.example.desafio_android_marcos_giovanni.model.Hero
+import com.example.desafio_android_marcos_giovanni.ui.comic.ComicsActivity
 
 class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
     DetailsFragment.MoveToComicsListener {
@@ -46,7 +47,9 @@ class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
     }
 
     override fun onButtonClick() {
-        Toast.makeText(baseContext, "lol", Toast.LENGTH_SHORT).show()
+        val i = Intent(this, ComicsActivity::class.java)
+        i.putExtra(ComicsActivity.INTENT_HERO_ID, viewModel.selectedHero?.id)
+        startActivity(i)
     }
 
     override fun onBackPressed() {

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.comic.ComicsActivity">
+
+    <ImageView
+        android:id="@+id/comicCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/comic_cover_placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/gray_overlay"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/comicTitle"
+                style="@style/TextViewLargeLight"
+                android:layout_weight="0.25" />
+
+            <TextView
+                android:id="@+id/comicPrice"
+                style="@style/TextViewLargeLight"
+                android:layout_weight="0.75"
+                android:gravity="end"
+                android:text="@string/currency_placeholder" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/comicDescription"
+            style="@style/TextViewMediumLight"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+</FrameLayout>
