@@ -14,7 +14,7 @@ class ComicsNetworkDataSource(val networkService: NetworkService) : ComicsDataSo
 class ComicsDataSourceFactory {
     companion object {
         fun create(): ComicsDataSource {
-            return ComicsNetworkDataSource(NetworkServiceImpl.getInstance())
+            return ComicsNetworkDataSource(NetworkServiceImpl)
         }
     }
 }

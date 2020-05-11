@@ -30,7 +30,7 @@ class HeroDataSourceFactory : DataSource.Factory<Int, Hero>() {
     lateinit var heroDataSource: HeroDataSource
     override fun create(): DataSource<Int, Hero> {
         return HeroNetworkDataSource(
-            NetworkServiceImpl.getInstance()
+            NetworkServiceImpl
         )
     }
 }

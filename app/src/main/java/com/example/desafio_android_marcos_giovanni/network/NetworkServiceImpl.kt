@@ -7,8 +7,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NetworkServiceImpl : NetworkService {
-    val marvelApi: MarvelApiInterface
+object NetworkServiceImpl : NetworkService {
+    var marvelApi: MarvelApiInterface
     val baseUrl = "https://gateway.marvel.com:443"
     val publicKey = "0ccfa39395a520b9de0cdade634cbaa0"
     val hash = "4ab6f1cf0352b5d7b90f3deb4842d27c"
@@ -74,7 +74,7 @@ class NetworkServiceImpl : NetworkService {
         return list
     }
 
-    private fun <T> performCall(call: Call<T>): Response<T> {
+    fun <T> performCall(call: Call<T>): Response<T> {
         //This method is to deal with errors in the Api and to retry calls if needed
         var success: Boolean
         var retryCount = 0
@@ -84,14 +84,8 @@ class NetworkServiceImpl : NetworkService {
             response = clone.execute()
             success = response.isSuccessful && response.code() == 200
             retryCount++
-        } while (!success || retryCount < 3)
+        } while (!success && retryCount < 3)
 
         return response
-    }
-
-    companion object {
-        val service = NetworkServiceImpl()
-
-        fun getInstance(): NetworkServiceImpl = service
     }
 }
