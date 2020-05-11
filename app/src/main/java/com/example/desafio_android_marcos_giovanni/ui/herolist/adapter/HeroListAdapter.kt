@@ -20,7 +20,12 @@ class HeroListAdapter(val listener: ListFragment.HeroSelectedListener) : PagedLi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.binding.root.setOnClickListener { listener.onHeroSelected(item) }
+            holder.binding.root.setOnClickListener {
+                listener.onHeroSelected(
+                    item,
+                    holder.binding.heroListImage
+                )
+            }
             holder.binding.heroListText.text = item.name
             Picasso.get().load(item.imageUrl).resize(200, 200).into(holder.binding.heroListImage)
         }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,7 +17,7 @@ import com.example.desafio_android_marcos_giovanni.ui.herolist.adapter.HeroListA
 class ListFragment(val listener: HeroSelectedListener) : Fragment() {
 
     interface HeroSelectedListener {
-        fun onHeroSelected(hero : Hero)
+        fun onHeroSelected(hero: Hero, imageView: ImageView)
     }
 
     companion object {
@@ -24,7 +25,7 @@ class ListFragment(val listener: HeroSelectedListener) : Fragment() {
     }
 
     private lateinit var viewModel: HeroListViewModel
-    private lateinit var binding: ListFragmentBinding
+    lateinit var binding: ListFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

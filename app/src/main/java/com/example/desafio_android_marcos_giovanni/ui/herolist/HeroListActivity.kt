@@ -2,11 +2,17 @@ package com.example.desafio_android_marcos_giovanni.ui.herolist
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Fade
+import android.transition.TransitionInflater
+import android.transition.TransitionSet
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.desafio_android_marcos_giovanni.R
 import com.example.desafio_android_marcos_giovanni.model.Hero
 import com.example.desafio_android_marcos_giovanni.ui.comic.ComicsActivity
+
 
 class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
     DetailsFragment.MoveToComicsListener {
@@ -27,11 +33,37 @@ class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
         }
     }
 
-    private fun transitToDetails() {
+    private fun transitToDetails(imageView: ImageView) {
+        // 1. Exit for Previous Fragment
+
+        val detailFragment = DetailsFragment.newInstance(this)
+        val exitFade = Fade()
+        val FADE_DEFAULT_TIME = 500L
+        val MOVE_DEFAULT_TIME = 500L
+        exitFade.duration = FADE_DEFAULT_TIME
+        listFragment.exitTransition = exitFade
+
+        // 2. Shared Elements Transition
+        val enterTransitionSet = TransitionSet()
+        enterTransitionSet.addTransition(
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        )
+        enterTransitionSet.duration = MOVE_DEFAULT_TIME
+        enterTransitionSet.startDelay = FADE_DEFAULT_TIME
+        detailFragment.sharedElementEnterTransition = enterTransitionSet
+
+        // 3. Enter Transition for New Fragment
+        val enterFade = Fade()
+        enterFade.startDelay = MOVE_DEFAULT_TIME + FADE_DEFAULT_TIME
+        enterFade.duration = FADE_DEFAULT_TIME
+        detailFragment.enterTransition = enterFade
+
+        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.addSharedElement(imageView, imageView.transitionName)
+        fragmentTransaction.replace(R.id.frame, detailFragment)
+        fragmentTransaction.commit()
+
         onDetails = true
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame, DetailsFragment.newInstance(this))
-            .commitNow()
     }
 
     private fun transitToList() {
@@ -41,9 +73,9 @@ class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
             .commitNow()
     }
 
-    override fun onHeroSelected(hero: Hero) {
+    override fun onHeroSelected(hero: Hero, imageView: ImageView) {
         viewModel.selectedHero = hero
-        transitToDetails()
+        transitToDetails(imageView)
     }
 
     override fun onButtonClick() {

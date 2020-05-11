@@ -11,6 +11,7 @@
         android:id="@+id/heroListImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:transitionName="@string/transition_image_name"
         app:srcCompat="@drawable/ic_launcher_foreground" />
     <TextView
         android:id="@+id/heroListText"
