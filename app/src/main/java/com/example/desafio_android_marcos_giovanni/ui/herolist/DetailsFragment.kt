@@ -36,6 +36,7 @@ class DetailsFragment(val listener: MoveToComicsListener) : Fragment() {
         binding.detailName.text = viewModel.selectedHero?.name
         binding.detailButton.setOnClickListener { listener.onButtonClick() }
         Picasso.get().load(hero?.imageUrl).fit().into(binding.detailImage)
+        binding.detailImage.transitionName = hero?.name + hero?.id
         if (hero?.description?.isNotEmpty()!!)
             binding.detailDescription.text = viewModel.selectedHero?.description
     }

@@ -7,6 +7,7 @@ import android.transition.TransitionInflater
 import android.transition.TransitionSet
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.desafio_android_marcos_giovanni.R
@@ -17,6 +18,7 @@ import com.example.desafio_android_marcos_giovanni.ui.comic.ComicsActivity
 class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
     DetailsFragment.MoveToComicsListener {
 
+    private lateinit var detailFragment: DetailsFragment
     private lateinit var viewModel: HeroListViewModel
     val listFragment : ListFragment = ListFragment.newInstance(this)
     var onDetails = false
@@ -33,15 +35,18 @@ class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
         }
     }
 
-    private fun transitToDetails(imageView: ImageView) {
+    private fun performTransition(
+        imageView: ImageView,
+        previousFrag: Fragment,
+        nextFragment: Fragment
+    ) {
         // 1. Exit for Previous Fragment
 
-        val detailFragment = DetailsFragment.newInstance(this)
         val exitFade = Fade()
         val FADE_DEFAULT_TIME = 500L
         val MOVE_DEFAULT_TIME = 500L
         exitFade.duration = FADE_DEFAULT_TIME
-        listFragment.exitTransition = exitFade
+        previousFrag.exitTransition = exitFade
 
         // 2. Shared Elements Transition
         val enterTransitionSet = TransitionSet()
@@ -50,32 +55,30 @@ class HeroListActivity : AppCompatActivity(), ListFragment.HeroSelectedListener,
         )
         enterTransitionSet.duration = MOVE_DEFAULT_TIME
         enterTransitionSet.startDelay = FADE_DEFAULT_TIME
-        detailFragment.sharedElementEnterTransition = enterTransitionSet
+        nextFragment.sharedElementEnterTransition = enterTransitionSet
 
         // 3. Enter Transition for New Fragment
         val enterFade = Fade()
         enterFade.startDelay = MOVE_DEFAULT_TIME + FADE_DEFAULT_TIME
         enterFade.duration = FADE_DEFAULT_TIME
-        detailFragment.enterTransition = enterFade
+        nextFragment.enterTransition = enterFade
 
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.addSharedElement(imageView, imageView.transitionName)
-        fragmentTransaction.replace(R.id.frame, detailFragment)
+        fragmentTransaction.replace(R.id.frame, nextFragment)
         fragmentTransaction.commit()
-
-        onDetails = true
     }
 
     private fun transitToList() {
         onDetails = false
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame, listFragment)
-            .commitNow()
+        performTransition(detailFragment.binding.detailImage, detailFragment, listFragment)
     }
 
     override fun onHeroSelected(hero: Hero, imageView: ImageView) {
+        onDetails = true
         viewModel.selectedHero = hero
-        transitToDetails(imageView)
+        detailFragment = DetailsFragment.newInstance(this)
+        performTransition(imageView, listFragment, detailFragment)
     }
 
     override fun onButtonClick() {

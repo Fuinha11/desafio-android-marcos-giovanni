@@ -10,5 +10,5 @@
     <string name="list_title">List of Heroes</string>
     <string name="no_description">This hero has no discription =/</string>
     <string name="currency_placeholder">$xx.xx</string>
-    <string name="transition_image_name">$xx.xx</string>
+    <string name="transition_image_name">transition_name%d</string>
 </resources>

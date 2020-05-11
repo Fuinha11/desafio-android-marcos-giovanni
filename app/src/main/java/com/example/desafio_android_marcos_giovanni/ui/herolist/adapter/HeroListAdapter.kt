@@ -28,6 +28,7 @@ class HeroListAdapter(val listener: ListFragment.HeroSelectedListener) : PagedLi
             }
             holder.binding.heroListText.text = item.name
             Picasso.get().load(item.imageUrl).resize(200, 200).into(holder.binding.heroListImage)
+            holder.binding.heroListImage.transitionName = item.name + item.id
         }
     }
 
